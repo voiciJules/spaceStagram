@@ -1,70 +1,77 @@
-# Getting Started with Create React App
+# spaceStagram
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduction
 
-## Available Scripts
+Hello! Here is documentation for my project 'spaceStagram' in the field of frontend. You can visit the web site in the browser by the address(https://voicihojun.github.io/spacestagram).
 
-In the project directory, you can run:
+## Description
 
-### `npm start`
+1. Search results come from NASA’s free APIs(https://api.nasa.gov). Between several nasa's websites, I used APOD( Astronomy Picture of the Day).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+HTTP Request :
+GET https://api.nasa.gov/planetary/apod with API key.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Query parameters : Query parameters that I used for this website
+| Parameter | Type | Default | Description |
+| --- | :---: | :---: | ---: |
+| `start_date` | YYYY-MM-DD | none | The start of a date range, when requesting date for a range of dates. Cannot be used with date. |
+| `end_date` | YYYY-MM-DD | today | The end of the date range, when used with start_date. |
+| `count` | int | none | If this is specified then count randomly chosen images will be returned. Cannot be used with date or start_date and end_date. |
+| `api_key` | string | DEMO_KEY | api.nasa.gov key for expanded usage |
 
-### `npm test`
+2. Framework : React, CSS
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. Technical requirements
+   1. Each image result should list at least a title, date of capture (ideally in earth_date) and a button to “like” that image.
+   2. Each image can be “liked”, and a user should be able to undo their “like”
+   3. The HTML that ends up being served client-side should be accessible and semantic (MDN reference)
+   4. More options
+      - Save likes if the user leaves or reloads the page
+      - Animate the “like” action (might we suggest a heart?)
+      - Add a loading state while we wait for NASA’s API to return data
+      - Create shareable links for each image
+      - Add a date-picker to be able to browse photos starting from a specific date
+      - Add a fabicon image to the title for spaceStagram
+      - Responsive website
+      - random button to show randomly 5 space's images
 
-### `npm run build`
+## Demo
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Below are gif demos of my project to show the above technical requirements.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### 1. Initial State
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+When I first access to this website, it shows 5 random space's images. Here is what I used query parameter `count=5`. Each image result lists a title, date of capture and a button to “like” that image. Each image can be “liked”, and a user is able to undo their “like”
 
-### `npm run eject`
+![1](https://user-images.githubusercontent.com/46732468/149686562-26f23e1d-0646-479e-9b29-461dd42d2755.gif)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+#### 2. Save likes if the user leaves or reloads the page
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+By using localstorage of browser, I saved likes when the user leaves or reloads the page
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+![2](https://user-images.githubusercontent.com/46732468/149686924-c7fb31a6-d8d9-463a-9e95-24346372c14b.gif)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### 3. Animate the “like” action
 
-## Learn More
+By using CSS, I made a like action which The heart shape increases and returns to its original size.
+(This demo is included to the number 2.)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### 4. Add a loading state while we wait for NASA’s API to return data
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+![3](https://user-images.githubusercontent.com/46732468/149687048-4e616d69-98c7-4eb2-8619-aa9c08580661.gif)
 
-### Code Splitting
+#### 5. Create shareable links for each image
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Each image has a link image. We can copy the shareable link by clicking the link image.
 
-### Analyzing the Bundle Size
+![4](https://user-images.githubusercontent.com/46732468/149687946-6e2e92cb-4855-4d78-8e31-0a2ee7a6c058.gif)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#### 6. Add a date-picker to be able to browse photos starting from a specific date
 
-### Making a Progressive Web App
+With start date and end date information, we can search the photos from the start date to the end date.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+![5](https://user-images.githubusercontent.com/46732468/149687978-b679c3b9-b73d-4be4-ac21-5845f77a2cc2.gif)
 
-### Advanced Configuration
+#### 7. Add a fabicon image to the title for spaceStagram & Responsive website & random button
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![6](https://user-images.githubusercontent.com/46732468/149688003-a4b4935d-b332-454b-abe1-8868850961ee.gif)
