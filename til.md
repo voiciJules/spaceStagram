@@ -62,11 +62,43 @@ In the above code, {} was a problem. I removed {}, and then the error message wa
 I succeed to render 5 random images by using '&count=5' options in the API, axios, useEffect and map.
 In addition, I implements basic css file for this app.
 
-# 2023-11-13
+# 2023-11-13 : making like image and copy link image
+
+I displayed Copy link image and Like image at the end of left and right by using 'display: flex; justify-content : space-between'. And then, when I clicked the copy link image, it makes a pop-up with a message 'copied the image url : image url'. I want to change it later with better way.
+For Like image, I have to use local storage. This Local Storage is to save some information by using the form 'key' : 'value' in the browser. Even if the sessoin is changed, the saved data is still there.
+The way to use local storage.
+setItem() : adding key, value / window.localStorage.setItem(key, value)
+getItem() : reading a specific value with key / window.localStorage.getItem(key)
+removeItem() : deleting the Item / window.localStorage.removeItem(key);
+clear() : deleting all information in the browser / window.localStorage.clear();
+length : total amount of items / window.localStorage.length;
+key() : using index, returning the key / window.localStorage.key(index);
+
+We can only store string. In order to store object or array, we need to use the way below.
+"""
+const obj = { name : 'anna', age : 20}
+const arr = [1, 2, 3];
+
+const objString = JSON.stringify(obj);
+const arrString = JSON.stringify(arr);
+
+window.localStorage.setItem('person', objString);
+window.localStorage.setItem('nums', arrString);
+
+const personString = window.localStorage.getItem('person');
+const numsString = window.localStorage.getItem('nums');
+
+// JSON 문자열을 객체, 배열로 변환
+const personObj = JSON.parse(personString);
+const numsArr = JSON.parse(numsString);
+"""
+
+# 2023-11-14 : LIKE function implementation by LocalStorage
+
+// TODO
+tests bug fix
+make tests for rendering parts
 
 Logics to implement.
 I need to search about key attribute in the list.
 when i enter start and end date in the calendar and click submit button, show loading images when we are waiting for receiving the images, and when it's done to receive them, show the images.
-
-tests bug fix
-make tests for rendering parts

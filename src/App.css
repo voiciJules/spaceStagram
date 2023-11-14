@@ -49,7 +49,7 @@ input:focus {
   padding: 15px;
 }
 
-img {
+#image img {
   width: 100%;
   border-top-right-radius: 15px;
   border-top-left-radius: 15px;
@@ -61,10 +61,17 @@ img {
   margin-bottom: 7px;
 }
 
-#image {
-}
-
 #image-explanation {
   font-size: 14px;
   font-weight: 300;
+}
+
+#image-content div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+#image-content div div img {
+  width: 30px;
 }

@@ -2,19 +2,34 @@ import "./App.css";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
+import emptyHeartImg from "./images/emptyHeart.png";
+import linkImg from "./images/link.png";
 import "react-datepicker/dist/react-datepicker.css";
 
 function App() {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [images, setImages] = useState([]);
+  const [like, setLike] = useState(false);
 
   const API_KEY = "i8uDqqN63HLwdmDnCqAvNbbfmLEoYIGrKeaBtiBo";
   const getImages = async () => {
     await axios
       .get(`https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&count=5`)
-      .then((response) => setImages(response.data))
+      .then((response) => {
+        setImages(response.data);
+        console.log(response.data);
+      })
       .catch((error) => console.log(error));
+  };
+
+  const linkHandler = (e) => {
+    e.preventDefault();
+    const copyText = e.target.getAttribute("value");
+    console.log(copyText);
+    navigator.clipboard.writeText(copyText).then(function () {
+      window.alert("copied the image url: " + copyText);
+    });
   };
 
   useEffect(() => {
@@ -25,9 +40,22 @@ function App() {
   const imageList = images.map((image) => (
     <div id="image-container">
       <div id="image">
-        <img src={image.url} alt={image.title} width="500" />
+        <img src={image.url} alt={image.title} />
       </div>
       <div id="image-content">
+        <div>
+          <div>
+            <img src={emptyHeartImg} alt="emptyHeart" />
+          </div>
+          <div>
+            <img
+              src={linkImg}
+              alt="link"
+              value={image.hdurl}
+              onClick={linkHandler}
+            />
+          </div>
+        </div>
         <div id="image-title">
           {image.title} - {image.date}
         </div>
@@ -69,6 +97,7 @@ function App() {
           </div>
         </div>
       </div>
+
       <div>{imageList}</div>
     </div>
   );
