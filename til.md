@@ -93,12 +93,83 @@ const personObj = JSON.parse(personString);
 const numsArr = JSON.parse(numsString);
 """
 
-# 2023-11-14 : LIKE function implementation by LocalStorage
+# 2023-11-14 : LIKE function implementation by LocalStorage / test bug fix
 
-// TODO
-tests bug fix
+=========== html dataset attribute ===========
+dataset attribute is something like variable in html tag.
+we can define it with 'data-somename'.  
+for example, data-value='value', data-country='US'.  
+we can store array and object as well in the dataset.
+
+access(read) : dataset / getAttribute()
+add / modify : dataset/ setAttribute()  
+delete : delete / removeAttribute()
+
+"""
+localStorage.setItem("images", JSON.stringify(images));
+
+const toggleLikeHandling = (e) => {
+const title = e.target.dataset.title;
+images.map((image) =>
+title === image.title ? (image.like = !image.like) : ""
+);
+setLike(!like);
+console.log(title + " " + like);
+};
+"""
+
+it's implemented by using dataset attribute and local storage.
+
+test bug fix  
+getAllByRole('textbox') 로 input 두 개가 들어간 부분을 지정한 뒤 인덱스로 각 date 부분을 가져옴.  
+"""
+test("start and end dates input value validation", async () => {
+render(<App />);
+const startDate = screen.getAllByRole("textbox")[0];
+fireEvent.mouseDown(startDate);
+fireEvent.change(startDate, { target: { value: "2023-11-01" } });
+expect(startDate.value).toBe("2023-11-01");
+
+const endDate = screen.getAllByRole("textbox")[1];
+fireEvent.mouseDown(endDate);
+fireEvent.change(endDate, { target: { value: "2023-10-01" } });
+expect(endDate.value).toBe("2023-10-01");
+});
+"""
+
+bug fix in console.
+"""
+react-jsx-dev-runtime.development.js:87 Warning: Each child in a list should have a unique "key" prop.
+"""
+In the part of 'images.map', I added `key={image.url}` in the wrapper div. and the error message in console is disappeared.
+
+When refreshing the website or opening the website in another window, the website should memorize 'like' for each image. I used `const [images, setImages] = useState(() => JSON.parse(localStorage.getItem("images")) || []);` code. If images.length === 0, I used `getImages()`. If not, the webpage will get images from localStorage.
+
+# TODO : 2023-11-15 : website logic implementation
+
+- when first rendering the webpage, it show 5 random images from NASA api. - done
+- when you click like image, it should fill the empty heart with red color. - done
+- when you clikc link image, it should pop up the alert with image address. - done
+- when refreshing the website or opening it with new window, the website should memorize if each image has received 'like'. - done
+- below start and end date, there are 2 buttons(submit and random). - todo
+- if i fill start and end date and then click the submit button, it renders the images between start date and end date. - todo
+- if I click the random button, it shows the other 5 random images again. - todo
+- during the waiting time to render images, there is loading message - todo
+
+### =============== TODO ========================
+
+tooltip, clipboard 관련
+https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
+
+tests 만들기
 make tests for rendering parts
 
+- heart 이미지 클릭되면 heart.png 나오는지 확인
+- link 관련 테스트
+- image 관련 테스트
+
+img 가 비디오인 경우에는 이미지가 안 나옴
+
 Logics to implement.
-I need to search about key attribute in the list.
+
 when i enter start and end date in the calendar and click submit button, show loading images when we are waiting for receiving the images, and when it's done to receive them, show the images.

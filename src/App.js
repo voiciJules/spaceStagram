@@ -3,13 +3,19 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import emptyHeartImg from "./images/emptyHeart.png";
+import heartImg from "./images/heart.png";
 import linkImg from "./images/link.png";
 import "react-datepicker/dist/react-datepicker.css";
 
 function App() {
+  const [images, setImages] = useState(
+    () => JSON.parse(localStorage.getItem("images")) || []
+  );
+  console.log("=============");
+  console.log(images);
+  console.log("-------------");
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
-  const [images, setImages] = useState([]);
   const [like, setLike] = useState(false);
 
   const API_KEY = "i8uDqqN63HLwdmDnCqAvNbbfmLEoYIGrKeaBtiBo";
@@ -18,34 +24,53 @@ function App() {
       .get(`https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&count=5`)
       .then((response) => {
         setImages(response.data);
+        console.log("===========");
         console.log(response.data);
       })
       .catch((error) => console.log(error));
   };
 
+  localStorage.setItem("images", JSON.stringify(images));
+
   const linkHandler = (e) => {
     e.preventDefault();
     const copyText = e.target.getAttribute("value");
-    console.log(copyText);
+    // console.log(copyText);
     navigator.clipboard.writeText(copyText).then(function () {
       window.alert("copied the image url: " + copyText);
     });
   };
 
   useEffect(() => {
-    getImages();
-    console.log(images);
+    if (images.length === 0) {
+      getImages();
+      // console.log(images);
+    }
   }, []);
 
+  const toggleLikeHandling = (e) => {
+    const title = e.target.dataset.title;
+    images.map((image) =>
+      title === image.title ? (image.like = !image.like) : ""
+    );
+    setLike(!like);
+    console.log(title + " " + like);
+  };
+
   const imageList = images.map((image) => (
-    <div id="image-container">
+    <div key={image.url} id="image-container">
       <div id="image">
         <img src={image.url} alt={image.title} />
       </div>
       <div id="image-content">
         <div>
           <div>
-            <img src={emptyHeartImg} alt="emptyHeart" />
+            <img
+              data-title={image.title}
+              src={image.like ? heartImg : emptyHeartImg}
+              alt="heart"
+              onClick={toggleLikeHandling}
+            />
           </div>
           <div>
             <img
