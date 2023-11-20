@@ -75,3 +75,17 @@ input:focus {
 #image-content div div img {
   width: 30px;
 }
+
+#end-date-container {
+  margin-bottom: 10px;
+}
+
+#button-container button {
+  font-size: 12px;
+  border-radius: 3px;
+  border: 1px solid #a0a3a6;
+}
+
+#button-container button:first-child {
+  margin-right: 7px;
+}

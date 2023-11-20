@@ -145,18 +145,32 @@ In the part of 'images.map', I added `key={image.url}` in the wrapper div. and t
 
 When refreshing the website or opening the website in another window, the website should memorize 'like' for each image. I used `const [images, setImages] = useState(() => JSON.parse(localStorage.getItem("images")) || []);` code. If images.length === 0, I used `getImages()`. If not, the webpage will get images from localStorage.
 
-# TODO : 2023-11-15 : website logic implementation
+# 2023-11-17 : website logic implementation
 
-- when first rendering the webpage, it show 5 random images from NASA api. - done
-- when you click like image, it should fill the empty heart with red color. - done
-- when you clikc link image, it should pop up the alert with image address. - done
-- when refreshing the website or opening it with new window, the website should memorize if each image has received 'like'. - done
-- below start and end date, there are 2 buttons(submit and random). - todo
-- if i fill start and end date and then click the submit button, it renders the images between start date and end date. - todo
-- if I click the random button, it shows the other 5 random images again. - todo
+- when first rendering the webpage, it show 5 random images from NASA api. - already done
+- when you click like image, it should fill the empty heart with red color. - already done
+- when you clikc link image, it should pop up the alert with image address. - already done
+- when refreshing the website or opening it with new window, the website should memorize if each image has received 'like'. - already done
+- below start and end date, there are 2 buttons(submit and random). - todo -> now, done
+- if i fill start and end date and then click the submit button, it renders the images between start date and end date. - todo => almost done
+- if I click the random button, it shows the other 5 random images again. - todo -> now, done
+- during the waiting time to render images, there is loading message - todo
+
+# =============== Error ==============
+
+axios 1.1.2 version issue  
+SyntaxError: Cannot use import statement outside a module  
+package.json script 부분에서,  
+"test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
+
+# 2023-11-20 : website logic implementation
+
+- if i fill start and end date and then click the submit button, it renders the images between start date and end date. - todo => some issue(when I use setStartDateFormat, it didn't apply to the startDateFormat right away. So, it doesn't render appropriate images)
 - during the waiting time to render images, there is loading message - todo
 
 ### =============== TODO ========================
+
+start date 와 end Date 넣고 submit 버튼 눌렀을 때 바로 반영이 안됨 ㅜ ㅠ
 
 tooltip, clipboard 관련
 https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
