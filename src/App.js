@@ -5,44 +5,43 @@ import DatePicker from "react-datepicker";
 import emptyHeartImg from "./images/emptyHeart.png";
 import heartImg from "./images/heart.png";
 import linkImg from "./images/link.png";
+import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 
 function App() {
   const [images, setImages] = useState(
     () => JSON.parse(localStorage.getItem("images")) || []
   );
-  console.log("=============");
-  console.log(images);
-  console.log("-------------");
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [like, setLike] = useState(false);
-  const [startDateFormat, setStartDateFormat] = useState("");
-  const [endDateFormat, setEndDateFormat] = useState("");
+  const [startDateStr, setStartDateStr] = useState("");
+  const [endDateStr, setEndDateStr] = useState("");
 
   const API_KEY = "i8uDqqN63HLwdmDnCqAvNbbfmLEoYIGrKeaBtiBo";
-  const getImages = async () => {
-    if (startDateFormat === "") {
-      await axios
-        .get(`https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&count=5`)
-        .then((response) => {
-          setImages(response.data);
-          console.log("===========");
-        })
-        .catch((error) => console.log(error));
-      console.log("startDate = " + startDateFormat);
-    } else {
-      await axios
-        .get(
-          `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&start_date=${startDateFormat}&end_date=${endDateFormat}`
-        )
-        .then((response) => {
-          setImages(response.data);
-          console.log("===========");
-          console.log(response.data);
-        })
-        .catch((error) => console.log(error));
-    }
+  const getImagesDefault = async () => {
+    await axios
+      .get(`https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&count=5`)
+      .then((response) => {
+        setImages(response.data);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const getImagesWithDate = async () => {
+    await axios
+      .get(
+        `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&start_date=${startDateStr}&end_date=${endDateStr}`
+      )
+      .then((response) => {
+        setImages(response.data);
+      })
+      .catch((error) => console.log(error));
+
+    setStartDate("");
+    setEndDate("");
+    setStartDateStr("");
+    setEndDateStr("");
   };
 
   localStorage.setItem("images", JSON.stringify(images));
@@ -56,13 +55,6 @@ function App() {
     });
   };
 
-  // useEffect(() => {
-  //   if (images.length === 0) {
-  //     getImages();
-  //     // console.log(images);
-  //   }
-  // }, []);
-
   const toggleLikeHandling = (e) => {
     const title = e.target.dataset.title;
     images.map((image) =>
@@ -72,42 +64,36 @@ function App() {
     console.log(title + " " + like);
   };
 
+  const handleStartDate = (date) => {
+    setStartDate(date);
+    const dateStr = moment(date).format().substring(0, 10);
+    // const dateStr = makeDateFormat(date);   <== 이 부분을 바꾸니 바로 useState 적용됨.
+    setStartDateStr(dateStr);
+  };
+
+  const handleEndDate = (date) => {
+    setEndDate(date);
+    const dateStr = moment(date).format().substring(0, 10);
+    setEndDateStr(dateStr);
+  };
+
   const randomButtonHandler = () => {
-    setStartDateFormat("");
-    setEndDateFormat("");
-    setStartDate("");
-    setEndDate("");
     localStorage.clear();
-    getImages();
+    getImagesDefault();
   };
 
-  const makeDateFormat = (date) => {
-    const y = date.getFullYear();
-    const m = ("00" + (date.getMonth() + 1)).slice(-2);
-    const d = ("00" + date.getDate()).slice(-2);
-
-    const dateFormat = y + "-" + m + "-" + d;
-
-    return dateFormat;
-  };
-
-  const submitButtonHandler = () => {
-    const start = makeDateFormat(startDate);
-    const end = makeDateFormat(endDate);
-    setStartDateFormat(start);
-    setEndDateFormat(end);
-    console.log(startDateFormat + "/" + endDateFormat);
-    localStorage.clear();
-    getImages();
+  const submitButtonHandler = (e) => {
+    // e.preventDefault();
+    console.log(startDateStr);
+    console.log(endDateStr);
+    getImagesWithDate();
   };
 
   useEffect(() => {
     if (images.length === 0) {
-      getImages();
+      getImagesDefault();
       // console.log(images);
     }
-    setStartDateFormat(startDateFormat);
-    setEndDateFormat(endDateFormat);
   }, []);
 
   const imageList = images.map((image) => (
@@ -157,7 +143,10 @@ function App() {
             <DatePicker
               data-testid="start-datepicker"
               selected={startDate}
-              onChange={(date) => setStartDate(date)}
+              // onChange={(date) => {
+              //   setStartDate(date);
+              // }}
+              onChange={handleStartDate}
               dateFormat="yyyy-MM-dd"
             />
           </div>
@@ -169,7 +158,7 @@ function App() {
           <div>
             <DatePicker
               selected={endDate}
-              onChange={(date) => setEndDate(date)}
+              onChange={handleEndDate}
               dateFormat="yyyy-MM-dd"
             />
           </div>

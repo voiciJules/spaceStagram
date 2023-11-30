@@ -145,7 +145,7 @@ In the part of 'images.map', I added `key={image.url}` in the wrapper div. and t
 
 When refreshing the website or opening the website in another window, the website should memorize 'like' for each image. I used `const [images, setImages] = useState(() => JSON.parse(localStorage.getItem("images")) || []);` code. If images.length === 0, I used `getImages()`. If not, the webpage will get images from localStorage.
 
-# 2023-11-17 : website logic implementation
+# 2023-11-17 : website logic implementation(not finished)
 
 - when first rendering the webpage, it show 5 random images from NASA api. - already done
 - when you click like image, it should fill the empty heart with red color. - already done
@@ -163,14 +163,34 @@ SyntaxError: Cannot use import statement outside a module
 package.json script 부분에서,  
 "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
 
-# 2023-11-20 : website logic implementation
+# 2023-11-21 : website logic implementation
 
-- if i fill start and end date and then click the submit button, it renders the images between start date and end date. - todo => some issue(when I use setStartDateFormat, it didn't apply to the startDateFormat right away. So, it doesn't render appropriate images)
+- if i fill start and end date and then click the submit button, it renders the images between start date and end date. - todo => some issue(when I use setStartDateStr, it didn't apply to the startDateStr right away. So, it doesn't render appropriate images) => done
+
+After using moment library and removing makeDateFormat, now setStartDateStr reflect the changed start date and end date right away. And I moved useEffect at the end of the code.
+
+```
+const handleStartDate = (date) => {
+    setStartDate(date);
+    const dateStr = moment(date).format().substring(0, 10);
+    // const dateStr = makeDateFormat(date);   <== 이 부분을 바꾸니 바로 useState 적용됨.
+    setStartDateStr(dateStr);
+  };
+
+  const handleEndDate = (date) => {
+    setEndDate(date);
+    const dateStr = moment(date).format().substring(0, 10);
+    setEndDateStr(dateStr);
+  };
+```
+
+# 2023-11-21 : website logic implementation
+
 - during the waiting time to render images, there is loading message - todo
 
 ### =============== TODO ========================
 
-start date 와 end Date 넣고 submit 버튼 눌렀을 때 바로 반영이 안됨 ㅜ ㅠ
+start date 와 end Date 넣고 submit 버튼 눌렀을 때 바로 반영이 안됨 ㅜ ㅠ 이유를 알아야 된다.
 
 tooltip, clipboard 관련
 https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
